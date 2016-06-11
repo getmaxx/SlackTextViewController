@@ -15,6 +15,8 @@
 
 #import "SLKUIConstants.h"
 
+#import "SLKTextView+KGAttachments.h"
+
 NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMoveNotification";
 
 @interface SLKTextInputbar ()
@@ -75,6 +77,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     self.charCountLabelNormalColor = [UIColor lightGrayColor];
     self.charCountLabelWarningColor = [UIColor redColor];
     
+    self.enableRightButtonWithAttachment = NO;
     self.autoHideRightButton = YES;
     self.editorContentViewHeight = 38.0;
     self.contentInset = UIEdgeInsetsMake(5.0, 8.0, 5.0, 8.0);
@@ -290,28 +293,24 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 
 - (CGFloat)appropriateHeight
 {
-    CGFloat height = 0.0;
+    BOOL hasImage = [self.textView slk_hasImageAttachment];
+    CGFloat maximumHeight = [self slk_inputBarHeightForLines:self.textView.maxNumberOfLines];
     CGFloat minimumHeight = [self minimumInputbarHeight];
     
-    if (self.textView.numberOfLines == 1) {
-        height = minimumHeight;
-    }
-    else if (self.textView.numberOfLines < self.textView.maxNumberOfLines) {
-        height = [self slk_inputBarHeightForLines:self.textView.numberOfLines];
-    }
-    else {
-        height = [self slk_inputBarHeightForLines:self.textView.maxNumberOfLines];
-    }
+    CGRect textRect = [self.textView.attributedText boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.textView.frame), INT16_MAX)
+                                                                 options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                                 context:nil];
     
-    if (height < minimumHeight) {
-        height = minimumHeight;
-    }
-    
-    if (self.isEditing) {
-        height += self.editorContentViewHeight;
-    }
-    
+    const int extraPadding = hasImage? 10 : 0;
+    CGFloat height = self.contentInset.top + self.contentInset.bottom + textRect.size.height;
+    height = MIN(MAX(height + extraPadding * 2, minimumHeight), maximumHeight);
     return roundf(height);
+    
+//    if (self.isEditing) {
+//        height += self.editorContentViewHeight;
+//    }
+//    
+//    return roundf(height);
 }
 
 - (CGFloat)slk_inputBarHeightForLines:(NSUInteger)numberOfLines
@@ -336,7 +335,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 
 - (CGFloat)slk_appropriateRightButtonWidth
 {
-    if (self.autoHideRightButton) {
+    if ([self shouldHideRightButton]) {
         if (self.textView.text.length == 0) {
             return 0.0;
         }
@@ -347,7 +346,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 
 - (CGFloat)slk_appropriateRightButtonMargin
 {
-    if (self.autoHideRightButton) {
+    if ([self shouldHideRightButton]) {
         if (self.textView.text.length == 0) {
             return 0.0;
         }
@@ -537,7 +536,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     SLKTextView *textView = (SLKTextView *)notification.object;
     
     // Skips this it's not the expected textView.
-    if (![textView isEqual:self.textView]) {
+    if (![textView isEqual:self.textView]  && ![self.textView isFirstResponder]) {
         return;
     }
     
@@ -761,6 +760,18 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     _rightButtonTopMarginC = nil;
     _rightButtonBottomMarginC = nil;
     _editorContentViewHC = nil;
+}
+
+
+#pragma mark - Fork
+
+- (BOOL)shouldHideRightButton {
+        if((!self.enableRightButtonWithAttachment && [self.textView slk_hasImageAttachment] && self.textView.text.length == 1)
+                   || ![self.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length) {
+                return YES;
+            }
+    
+        return NO;
 }
 
 @end

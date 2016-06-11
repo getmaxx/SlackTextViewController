@@ -60,6 +60,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** The most appropriate height calculated based on the amount of lines of text and other factors. */
 @property (nonatomic, readonly) CGFloat appropriateHeight;
 
+//** Enable right button when NSAttributedString contains a NSTextAttachment. Default is NO. */
+@property (nonatomic, readwrite) BOOL enableRightButtonWithAttachment;
+
 
 #pragma mark - Initialization
 ///------------------------------------------------

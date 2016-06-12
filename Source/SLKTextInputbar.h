@@ -143,6 +143,17 @@ NS_ASSUME_NONNULL_BEGIN
 /** The color used for character counter label when it has exceeded the limit. Default is redColor. */
 @property (nonatomic, strong, readwrite) UIColor *charCountLabelWarningColor;
 
+
+#pragma mark - KGAttachments
+
+
+- (void)attachFile:(id)file;
+- (void)attachMultipleFiles:(NSArray *)files;
+
+@property (nonatomic, assign, readonly) BOOL hasAttachments;
+@property (nonatomic, copy, readonly) NSArray *attachments;
+@property (nonatomic, strong) UIView* attachmentView;
+
 @end
 
 NS_ASSUME_NONNULL_END

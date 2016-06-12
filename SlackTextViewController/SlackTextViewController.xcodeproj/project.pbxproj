@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2F0E1D8DBCEA48E44AE1C143 /* libPods-SnapshotTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6327B11F9C471674A5F8BEBC /* libPods-SnapshotTests.a */; };
-		D65E4E251D0CA4210012BA7E /* SLKTextView+KGAttachments.h in Headers */ = {isa = PBXBuildFile; fileRef = D65E4E231D0CA4210012BA7E /* SLKTextView+KGAttachments.h */; };
-		D65E4E261D0CA4210012BA7E /* SLKTextView+KGAttachments.m in Sources */ = {isa = PBXBuildFile; fileRef = D65E4E241D0CA4210012BA7E /* SLKTextView+KGAttachments.m */; };
 		F52253811CBE2F85002EECA9 /* SLKInputAccessoryView.h in Headers */ = {isa = PBXBuildFile; fileRef = F522536B1CBE2F85002EECA9 /* SLKInputAccessoryView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F52253821CBE2F85002EECA9 /* SLKInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = F522536C1CBE2F85002EECA9 /* SLKInputAccessoryView.m */; };
 		F52253831CBE2F85002EECA9 /* SLKTextInput.h in Headers */ = {isa = PBXBuildFile; fileRef = F522536D1CBE2F85002EECA9 /* SLKTextInput.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -79,8 +77,6 @@
 		6327B11F9C471674A5F8BEBC /* libPods-SnapshotTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnapshotTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6F4DB55302A979898CA257B /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CFFC0243895409AFFF7CC9F6 /* Pods-SnapshotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.release.xcconfig"; sourceTree = "<group>"; };
-		D65E4E231D0CA4210012BA7E /* SLKTextView+KGAttachments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SLKTextView+KGAttachments.h"; path = "SnapshotTests/Fork/SLKTextView+KGAttachments.h"; sourceTree = SOURCE_ROOT; };
-		D65E4E241D0CA4210012BA7E /* SLKTextView+KGAttachments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SLKTextView+KGAttachments.m"; path = "SnapshotTests/Fork/SLKTextView+KGAttachments.m"; sourceTree = SOURCE_ROOT; };
 		F522536B1CBE2F85002EECA9 /* SLKInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLKInputAccessoryView.h; sourceTree = "<group>"; };
 		F522536C1CBE2F85002EECA9 /* SLKInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLKInputAccessoryView.m; sourceTree = "<group>"; };
 		F522536D1CBE2F85002EECA9 /* SLKTextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLKTextInput.h; sourceTree = "<group>"; };
@@ -196,15 +192,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		D65E4E221D0CA3790012BA7E /* Fork */ = {
-			isa = PBXGroup;
-			children = (
-				D65E4E231D0CA4210012BA7E /* SLKTextView+KGAttachments.h */,
-				D65E4E241D0CA4210012BA7E /* SLKTextView+KGAttachments.m */,
-			);
-			name = Fork;
-			sourceTree = "<group>";
-		};
 		F5A7826A1BD0CEF300EC230B = {
 			isa = PBXGroup;
 			children = (
@@ -234,7 +221,6 @@
 		F5A782761BD0CEF300EC230B /* SlackTextViewController */ = {
 			isa = PBXGroup;
 			children = (
-				D65E4E221D0CA3790012BA7E /* Fork */,
 				F5A782771BD0CEF300EC230B /* SlackTextViewController.h */,
 				F5A7828F1BD0CF1D00EC230B /* Source */,
 				F5A782791BD0CEF400EC230B /* Info.plist */,
@@ -358,7 +344,6 @@
 			files = (
 				F52253811CBE2F85002EECA9 /* SLKInputAccessoryView.h in Headers */,
 				F5A782781BD0CEF300EC230B /* SlackTextViewController.h in Headers */,
-				D65E4E251D0CA4210012BA7E /* SLKTextView+KGAttachments.h in Headers */,
 				F52253831CBE2F85002EECA9 /* SLKTextInput.h in Headers */,
 				F52253871CBE2F85002EECA9 /* SLKTextView.h in Headers */,
 				F522538E1CBE2F85002EECA9 /* SLKTypingIndicatorView.h in Headers */,
@@ -598,7 +583,6 @@
 				F522538F1CBE2F85002EECA9 /* SLKTypingIndicatorView.m in Sources */,
 				F52253921CBE2F85002EECA9 /* UIResponder+SLKAdditions.m in Sources */,
 				F52253841CBE2F85002EECA9 /* SLKTextInput+Implementation.m in Sources */,
-				D65E4E261D0CA4210012BA7E /* SLKTextView+KGAttachments.m in Sources */,
 				F522538A1CBE2F85002EECA9 /* SLKTextView+SLKAdditions.m in Sources */,
 				F52253861CBE2F85002EECA9 /* SLKTextInputbar.m in Sources */,
 				F52253881CBE2F85002EECA9 /* SLKTextView.m in Sources */,

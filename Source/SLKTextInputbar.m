@@ -17,6 +17,11 @@
 
 NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMoveNotification";
 
+#define KG_SET_ORIGIN( r, x, y ) CGRectMake( x, y, r.size.width, r.size.height )
+CGFloat const KGAttachmentDim = 80.f;
+CGFloat const KGAttachmentHorizontalGap = 25.f;
+CGFloat const KGAttachmentVerticalGap = 10.f;
+
 @interface SLKTextInputbar ()
 
 @property (nonatomic, strong) NSLayoutConstraint *leftButtonWC;
@@ -37,6 +42,10 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 @property (nonatomic, strong) Class textViewClass;
 
 @property (nonatomic, getter=isHidden) BOOL hidden; // Required override
+
+@property (nonatomic, assign, readwrite) BOOL hasAttachments;
+@property (nonatomic, copy, readwrite) NSArray *attachments;
+@property (nonatomic, copy, readwrite) NSMutableArray *mutable_attachments;
 
 @end
 
@@ -310,6 +319,13 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     if (self.isEditing) {
         height += self.editorContentViewHeight;
     }
+
+    if (self.hasAttachments) {
+        [self kg_redrawAttachments];
+    }
+    
+    NSInteger numberOfLinesOfAttachments = (self.mutable_attachments.count) % 2 == 0 ? (self.mutable_attachments.count) / 2 : (self.mutable_attachments.count) % 2 + 1;
+    height += self.hasAttachments ? KGAttachmentDim * numberOfLinesOfAttachments : 0.f;
     
     return roundf(height);
 }
@@ -762,5 +778,59 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     _rightButtonBottomMarginC = nil;
     _editorContentViewHC = nil;
 }
+
+#pragma mark - KG Attachments
+
+- (void)attachFile:(id)file {
+    if (!_mutable_attachments) {
+        _mutable_attachments = [NSMutableArray array];
+    }
+    
+    [self.mutable_attachments addObject:file];
+    self.attachments = self.mutable_attachments.copy;
+    [self kg_redrawAttachments];
+}
+
+
+#pragma mark - KG Private
+
+- (void)kg_redrawAttachments {
+    NSInteger numberOfAttachments = _mutable_attachments.count;
+    for (int i = numberOfAttachments - 1; i >= 0; i--) {
+        id attachment = _mutable_attachments[i];
+        UIView *rep = [self kg_attachmentRepresentation:attachment];
+        [self.textView addSubview:rep];
+        CGFloat xPos = (numberOfAttachments - i) % 2 == 0 ? KGAttachmentHorizontalGap : KGAttachmentDim + KGAttachmentHorizontalGap * 2;
+        CGFloat yPos = (KGAttachmentDim + KGAttachmentVerticalGap) * (numberOfAttachments - i) / 2;
+        rep.frame = CGRectMake(xPos, yPos, CGRectGetWidth(rep.bounds), CGRectGetHeight(rep.bounds));
+    }
+}
+
+- (UIView *)kg_attachmentRepresentation:(id)attachment {
+    UIView *rep = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, KGAttachmentDim, KGAttachmentDim)];
+    
+    if ([attachment isKindOfClass:[UIImage class]]) {
+        UIImage *attachmentImage = attachment;
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:rep.bounds];
+        imgView.contentMode = UIViewContentModeScaleAspectFill;
+        imgView.image = attachmentImage;
+        imgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    }
+    
+    rep.layer.cornerRadius = 5.f;
+    
+    return rep;
+}
+
+
+#pragma mark - KG Getters
+- (NSArray *)attachments {
+    if (!_attachments) {
+        _attachments = [NSArray array];
+    }
+    
+    return _attachments;
+}
+
 
 @end
